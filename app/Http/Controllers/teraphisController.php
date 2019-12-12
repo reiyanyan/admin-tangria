@@ -40,12 +40,17 @@ class teraphisController extends Controller
           $teraphis = new Teraphi;
       }
 
-      foreach($request->spesialis as $key){
-        $result = array(
-          'product_id' => DB::table('products')->where('name', $key)->first()->id,
-          'value' => true
-        );
-        $var[] = $result ;
+      foreach($request->spesialis as $key => $spesialiss){
+        if($spesialiss != 'Other'){
+            $result = array(
+              'product_id' => DB::table('products')->where('name', $spesialiss)->first()->id,
+              'value' => true
+            );
+            $var[] = $result;
+        } else {
+            $var = 'Other';
+        }
+
       }
       $teraphis->nama = $request->name;
       $teraphis->libur = $request->libur;
@@ -62,13 +67,18 @@ class teraphisController extends Controller
       }
 
 
-      foreach($request->spesialis as $key){
-        $result = array(
-          'product_id' => DB::table('products')->where('name', $key)->first()->id,
-          'value' => true
-        );
-        $var[] = $result ;
+      foreach($request->spesialis as $key => $spesialiss){
+        if($spesialiss != 'Other'){
+            $result = array(
+              'product_id' => DB::table('products')->where('name', $spesialiss)->first()->id,
+              'value' => true
+            );
+            $var[] = $result;
+        } else {
+            $var = 'Other';
+        }
       }
+
       $teraphis->nama = $request->nama;
       $teraphis->libur = $request->libur;
       $teraphis->spesialis = json_encode($var);

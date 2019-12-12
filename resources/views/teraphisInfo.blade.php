@@ -4,9 +4,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
         <a class="btn btn-outline-dark" href="/teraphis/">Back To list</a><br><br>
-            <div class="card">
+            <div class="card card-shadow">
                 <div class="card-header">
-                  <h1>Teraphis</h1>
+                  <h1>Teraphist</h1>
                 </div>
                 <div class="card-body">
                     {!! Form::open(['url' => 'teraphis/update', 'method' => 'POST', 'files' => true]) !!}
@@ -14,31 +14,35 @@
                     <input type="hidden" name="id" value="{{ $teraphis->id }}">
                     <br>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Nama</label>
+                        <label for="exampleInputEmail1">Name</label>
                         <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                             placeholder="Isikan nama product" value="{{ $teraphis->nama }}">
                     </div>
                     <div class="form-group">
-                      <label for="selectHari">Hari Libur</label><br>
+                      <label for="selectHari">Day off</label><br>
                       <select id="selectTime" class="form-control" name="libur">
-                          <option selected="selected" value="Senin">Senin</option>
-                          <option value="Selasa">Selasa</option>
-                          <option value="Rabu">Rabu</option>
-                          <option value="Kamis">Kamis</option>
+                          <option selected="selected" value="Senin">Monday</option>
+                          <option value="Selasa">Tuesday</option>
+                          <option value="Rabu">Wednesday</option>
+                          <option value="Kamis">Thursday</option>
                       </select>
                     </div>
                     <div class="form-group">
-                        <label>Spesialis</label><br>
+                        <label>Specialist</label><br>
                         @foreach($products as $product)
                         <div class="custom-control custom-checkbox custom-control-inline">
                           <input type="checkbox" name="spesialis[]" class="custom-control-input" id="{{ $product->name }}" value="{{ $product->name }}" @if(getTeraphisValue($teraphis->nama,$product->id) == true ) checked  @endif>
                           <label class="custom-control-label" for="{{ $product->name }}">{{ $product->name }}</label>
                         </div>
                         @endforeach
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" name="spesialis[]" class="custom-control-input" id="Other" value="Other" @if($teraphis->spesialis == '"Other"') checked  @endif>
+                          <label class="custom-control-label" for="Other">Other</label>
+                        </div>
                     </div>
                     <div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-warning">Simpan</button>
+                            <button type="submit" class="btn btn-warning">Save</button>
                         </div>
                     </div>
                     {!! Form::close() !!}

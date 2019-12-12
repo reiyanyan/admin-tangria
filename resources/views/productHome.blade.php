@@ -5,23 +5,28 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <a class="btn btn-outline-dark" href="/home/">Back to Home</a><br><br>
-            <div class="card-columns">
-                <div class="card text-black-50 bg-light mb-3 p-5">
-                    <div class="text-center">
-                        <a class="btn btn-outline-primary" href="/product/new">Tambah baru</a>
-                    </div>
-                </div>
-                @foreach ($products as $product)
+            <div class="card card-shadow">
+                <div class="card-body">
+                    <div class="card-columns">
+                        <div class="card text-black-50 bg-light mb-3 p-5">
+                            <div class="text-center">
+                                <a class="btn btn-outline-dark" href="/product/new">Add Product</a>
+                            </div>
+                        </div>
+                        @foreach ($products as $product)
 
-                <div class="card">
-                    <img class="card-img-top" src="{{ "/img/product/".$product->image}}">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="/product/{{ $product->id }}">{{ $product->name }}</a></h5>
-                        <p class="card-text">{{ $product->description }}</p>
+                        <div class="card shadow">
+                            <img class="card-img-top" src="{{ "/img/product/".$product->image}}">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="/product/{{ $product->id }}">{{ $product->name }}</a></h5>
+                                <p class="card-text">{{ $product->description }}</p>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
-                @endforeach
             </div>
+
         </div>
     </div>
 </div>

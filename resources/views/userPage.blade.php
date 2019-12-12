@@ -10,15 +10,15 @@
             <a class="btn btn-outline-dark" href="/home/">Back to Home</a><br><br>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="customer-tab" data-toggle="pill" href="#customers-tab" role="tab" aria-controls="customers-tab" aria-selected="true">Customer</a>
+                    <a class="nav-link active" id="customer-tab" data-toggle="pill" href="#customers-tab" role="tab" aria-controls="customers-tab" aria-selected="true" onclick="localStorage.setItem('i', 1);">Customer</a>
                 </li>
                 @if(getRole()==2)
                 <li class="nav-item">
-                    <a class="nav-link" id="cashier-tab" data-toggle="pill" href="#cashiers-tab" role="tab" aria-controls="cashiers-tab" aria-selected="false">Cashiers</a>
+                    <a class="nav-link" id="cashier-tab" data-toggle="pill" href="#cashiers-tab" role="tab" aria-controls="cashiers-tab" aria-selected="false" onclick="localStorage.setItem('i', 3);">Cashiers</a>
                 </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link" id="blocked-tab" data-toggle="pill" href="#blocks-tab" role="tab" aria-controls="blocks-tab" aria-selected="false">Blocked</a>
+                    <a class="nav-link" id="blocked-tab" data-toggle="pill" href="#blocks-tab" role="tab" aria-controls="blocks-tab" aria-selected="false" onclick="localStorage.setItem('i', 2);">Blocked</a>
                 </li>
             </ul>
         </div>
@@ -30,16 +30,16 @@
         <div class="tab-pane fade show active" id="customers-tab" role="tabpanel" aria-labelledby="customer-tab">
             <div class="row justify-content-center">
                 <div class="col">
-                    <div class="card">
+                    <div class="card card-shadow">
                         <div class="card-header">
                             <h1 style="display:inline-block;">Customers</h1>
                         </div>
                         <div class="card-body">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">cari</span>
+                                    <span class="input-group-text" id="basic-addon1">search</span>
                                 </div>
-                                <input type="text" class="form-control" id="nameSearch" placeholder="ketikan nama user" aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control" id="nameSearch" placeholder="search user..." aria-label="Username" aria-describedby="basic-addon1">
                             </div>
                             <table class="table" id="tableOri">
                                 <thead>
@@ -96,7 +96,7 @@
         <div class="tab-pane fade" id="cashiers-tab" role="tabpanel" aria-labelledby="cashiers-tab">
             <div class="row justify-content-center">
                 <div class="col">
-                    <div class="card">
+                    <div class="card card-shadow">
                         <div class="card-header">
                             <h1 style="display:inline-block;">Cashiers</h1>
                         </div>
@@ -144,7 +144,7 @@
         <div class="tab-pane fade" id="blocks-tab" role="tabpanel" aria-labelledby="blocks-tab">
             <div class="row justify-content-center">
                 <div class="col">
-                    <div class="card">
+                    <div class="card card-shadow">
                         <div class="card-header">
                             <h1 style="display:inline-block;">Blocked</h1>
                         </div>
@@ -193,6 +193,24 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+var v = localStorage.getItem("i");
+if (v == 2){
+    document.getElementById("blocks-tab").classList.add('show', 'active');
+    document.getElementById("blocked-tab").classList.add('active');
+    document.getElementById("customers-tab").classList.remove('show', 'active');
+    document.getElementById("customer-tab").classList.remove('active');
+    document.getElementById("cashiers-tab").classList.remove('show', 'active');
+    document.getElementById("cashier-tab").classList.remove('active');
+}
+if (v == 3){
+    document.getElementById("cashiers-tab").classList.add('show', 'active');
+    document.getElementById("cashier-tab").classList.add('active');
+    document.getElementById("customers-tab").classList.remove('show', 'active');
+    document.getElementById("customer-tab").classList.remove('active');
+    document.getElementById("blocks-tab").classList.remove('show', 'active');
+    document.getElementById("blocked-tab").classList.remove('active');
+}
+
 $(document).ready(function() {
     // function checkSearch(){
     //     var tableSearch = document.getElementById("tableSearch");

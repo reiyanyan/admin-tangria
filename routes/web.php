@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::group(['middleware' => 'auth'], function() {
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/booking','bookingController@index')->name('bookingPage');
 Route::get('/booking/{id}','bookingController@infoWeb')->name('bookingInfo');
@@ -58,3 +59,4 @@ Route::post('/ubah-password', 'userController@ubahPasswordUser');
 
 //only admin
 Route::get('/user-management', 'userController@management');
+});

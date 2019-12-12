@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->text('fcm_token')->nullable();
             $table->rememberToken();
+            $table->text('session')->nullable();
             $table->timestamps();
         });
     }

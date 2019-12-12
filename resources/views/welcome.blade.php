@@ -12,16 +12,17 @@
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
+                background-color: #EDDFD6;
                 color: #636b6f;
                 font-family: 'Nunito', sans-serif;
                 font-weight: 200;
-                height: 100vh;
+                height: 100%;
+		width: 100%;
                 margin: 0;
             }
 
             .full-height {
-                height: 100vh;
+                height: 90vh;
             }
 
             .flex-center {
@@ -59,30 +60,43 @@
             }
 
             .m-b-md {
-                margin-bottom: 30px;
+                margin-bottom: 20px;
+            }
+
+
+            hr {
+                margin: 0px auto 0px auto;
+                border: 1.5px solid #A6C7CC;
+                text-align: center;
+            }
+
+            #logo {
+                width: 60%;
             }
         </style>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
+            <!-- @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
 
-                        <!-- @if (Route::has('register'))
+                        @if (Route::has('register'))
                             <a href="{{ route('register') }}">Register</a>
-                        @endif -->
+                        @endif
                     @endauth
                 </div>
-            @endif
+            @endif -->
 
             <div class="content">
                 <div class="title m-b-md">
-                    SPA
+                    <img id="logo" src="/img/login_title.png" alt="logo_img">
+                    <hr width="60%">
                 </div>
+
 
                 <div class="links">
                     <a href="/home">Home</a>

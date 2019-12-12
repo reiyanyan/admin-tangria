@@ -5,21 +5,20 @@
 <div class="row justify-content-md-center">
 <div class="col-xs-7 col-md-7 col-sm-7">
         <a class="btn btn-outline-dark" href="/home/">Back To home</a><br><br>
-        <br><br>
-    <div class="card">
+    <div class="card card-shadow">
         <div class="card-header">
-            <h1>Available Time</h1>
+            <h1>Closed Hour</h1>
         </div>
         <div class="card-body">
         <hr>
             {!! Form::open(['url' => 'date', 'method' => 'POST', 'files' => true]) !!}
             {{ Form::token() }}
             <div class="form-group">
-                <label for="date">Tanggal</label>
+                <label for="date">Date</label>
                 <input type="date" required name="date" id="date" class="form-control">
             </div>
             <div class="form-group">
-                <label for="time">Jam</label>
+                <label for="time">Time</label>
                 <select id="selectTime" class="form-control" name="time" id="time">
                     <option selected="selected" value="08:00:00">08:00</option>
                     <option value="09:00:00">09:00</option>
@@ -33,10 +32,10 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="descReason">Alasan</label>
-                <textarea name="description" class="form-control" id="reason" rows="5" placeholder="Alasan Tutup" required></textarea>
+                <label for="descReason">Reason</label>
+                <textarea name="description" class="form-control" id="reason" rows="5" placeholder="Reason for closing" required></textarea>
             </div>
-            <center><button type="submit" id="oke" class="btn btn-primary" style="width:240px;">Oke</button></center>
+            <center><button type="submit" id="oke" class="btn btn-primary" style="width:120px;">Ok</button></center>
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-center" style="margin-top:10px;">
@@ -53,9 +52,9 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">date</th>
-                        <th scope="col">status</th>
-                        <th scope="col">Keterangan</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Information</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,7 +63,7 @@
                     <tr>
                         <th scope="row">{{$result->id}}</th>
                         <td>{{ strftime("%A, %B %d %Y. %H:%M", strtotime($result->date)) }}</td>
-                        <td>tidak tersedia</td>
+                        <td>unavailable</td>
                         <td>{{ $result->reason }}</td>
                     </tr>
                     @endforeach

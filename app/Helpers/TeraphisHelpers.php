@@ -2,9 +2,9 @@
 use Illuminate\Support\Facades\DB;
 use App\price;
 if (!function_exists('infoTeraphis')) {
-    function infoTeraphis($pId)
+    function infoTeraphis($pId, $libur, $nama)
     {
-        return DB::table('teraphis')->where('spesialis','LIKE','%"product_id":'.$pId.',"value":true%')->first();
+        return DB::table('teraphis')->where('spesialis','LIKE','%"product_id":'.$pId.',"value":true%')->where('libur', '!=', $libur )->where('nama', 'LIKE', '%'.$nama.'%')->first();
     }
 }
 

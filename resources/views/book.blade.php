@@ -3,9 +3,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-11">
             <a class="btn btn-outline-dark" href="/home/">Back To home</a><br><br>
-            <div class="card">
+            <div class="card card-shadow">
                 <div class="card-header">
                     <h1>Booking</h1>
                 </div>
@@ -30,6 +30,7 @@
                                 <th scope="col">Order</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Room</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -42,6 +43,7 @@
                                     <td>{{ DB::table('products')->where('id',$booking->order)->first()->name }}</td>
                                     <td>{{ strftime("%A, %B %d %Y. %H:%M", strtotime($booking->date)) }}</td>
                                     <td>{{ $booking->status}}</td>
+                                    <td>{{ $booking->room }}</td>
                                     <td>
                                         <a class="btn btn-outline-dark" href="/booking/{{$booking->id}}">Info</a>
                                     </td>
@@ -86,10 +88,11 @@
                         success: function (data) {
                             $.each(data, function (index, element) {
                                 index = index+1;
-                                console.log(element);
+                                var room = ((element.room != null) ? element.room : "");
                                 var html = '<tr><td>'+ index +'</td><td>' + element.name +
                                     '</td><td>' + element.order + '</td><td>' + element.date +
                                     '</td><td>' + element.status +
+                                    '</td><td>' + room +
                                     '</td><td><a href="/booking/' + element.id +
                                     '" class="btn btn-dark">Info</a></td></tr>'
                                 $('#nama-table').append(html);
@@ -123,10 +126,12 @@
                     success: function (data) {
                         $.each(data, function (index, element) {
                             index = index+1;
-                            console.log(element);
+var room = ((element.room != null) ? element.room : "");
+                  
                             var html = '<tr><td>'+ index +'</td><td>' + element.name +
                                 '</td><td>' + element.order + '</td><td>' + element.date +
                                 '</td><td>' + element.status +
+                                '</td><td>' + room +
                                 '</td><td><a href="/booking/' + element.id +
                                 '" class="btn btn-dark">Info</a></td></tr>'
                             $('#nama-table').append(html);

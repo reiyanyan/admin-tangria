@@ -7,23 +7,25 @@
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="user-tab" data-toggle="pill" href="#users-tab" role="tab"
-                        aria-controls="users-tab" aria-selected="true">Users</a>
+                        aria-controls="users-tab" aria-selected="true" onclick="localStorage.setItem('j', 1);">Users</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="booking-tab" data-toggle="pill" href="#bookings-tab" role="tab"
-                        aria-controls="bookings-tab" aria-selected="false">Bookings</a>
+                        aria-controls="bookings-tab" aria-selected="false" onclick="localStorage.setItem('j', 2);">Bookings</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/date">Atur Jadwal</a>
+                    <a class="nav-link" href="/date">Set the Schedule</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/product">Produk Management</a>
+                    <a class="nav-link" href="/product">Product Management</a>
                 </li>
+            @if(getRole() == 2)
                 <li class="nav-item">
                     <a class="nav-link" href="/price">Price Management</a>
                 </li>
+            @endif
                 <li>
-                    <a class="nav-link" href="/teraphis">Teraphis Management</a>
+                    <a class="nav-link" href="/teraphis">Employee Management</a>
                 </li>
             </ul>
         </div>
@@ -34,7 +36,7 @@
         <div class="tab-pane fade show active" id="users-tab" role="tabpanel" aria-labelledby="users-tab">
             <div class="row justify-content-center">
                 <div class="col-md-10">
-                    <div class="card">
+                    <div class="card card-shadow">
                         <div class="card-header">
                             <h1>User Management</h1>
                         </div>
@@ -42,11 +44,11 @@
                             <ul class="nav nav-pills">
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="pill" id="customer-tab" href="#customers-tab"
-                                        role="tab" aria-controls="customers-tab" aria-selected="true">Pelanggan</a>
+                                        role="tab" aria-controls="customers-tab" aria-selected="true"  onclick="localStorage.setItem('i', 1);">Customers</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="blocked-tab" data-toggle="pill" href="#blocks-tab" role="tab"
-                                        aria-controls="blocks-tab" aria-selected="false">Blocked</a>
+                                        aria-controls="blocks-tab" aria-selected="false"  onclick="localStorage.setItem('i', 2);">Blocked</a>
                                 </li>
                             </ul>
                             <br>
@@ -86,7 +88,7 @@
                                                 <th scope="col" width="10%">#</th>
                                                 <th scope="col" width="30%">Name</th>
                                                 <th scope="col" width="30%">E-mail</th>
-						<th scope="col" width="30%">Phone</th>
+						                                    <th scope="col" width="30%">Phone</th>
                                                 {{--<th scope="col" width="30%">Action</th>--}}
                                             </tr>
                                         </thead>
@@ -96,7 +98,7 @@
                                                 <th scope="row">{{ ++$key }}</th>
                                                 <td>{{ $block->name }}</td>
                                                 <td>{{ $block->email }}</td>
-						<td>{{ $block->phone }}</td>
+						                                    <td>{{ $block->phone }}</td>
                                                 {{-- <td><a class="btn btn-dark" style="width:120px;" href="/user/edit/{{$block->id}}">Info</a></td> --}}
                                             </tr>
                                             @endforeach
@@ -119,8 +121,8 @@
 
         <div class="tab-pane fade" id="bookings-tab" role="tabpanel" aria-labelledby="bookings-tab">
             <div class="row justify-content-center">
-                <div class="col-md-10">
-                    <div class="card">
+                <div class="col-md-11">
+                    <div class="card card-shadow">
                         <div class="card-header">
                             <h1>Booking Management</h1>
                         </div>
@@ -133,6 +135,7 @@
                                         <th scope="col">order</th>
                                         <th scope="col">date</th>
                                         <th scope="col">status</th>
+                                        <th scope="col">room</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -148,6 +151,7 @@
                                         <td>{{infoProduct($booking->order)->name}}</td>
                                         <td>{{ strftime("%A, %B %d %Y. %H:%M", strtotime($booking->date))}}</td>
                                         <td>{{$booking->status}}</td>
+                                        <td>{{$booking->room}}</td>
                                         <td><a class="btn btn-dark" style="width:120px;" href="/booking/{{$booking->id}}">Info</a></td>
                                     </tr>
                                     @endforeach
@@ -165,4 +169,25 @@
     </div>
     <br>
 </div>
+@endsection
+
+@section('javascript')
+<script>
+
+    var k = localStorage.getItem("j");
+    if (k == 2){
+        document.getElementById("bookings-tab").classList.add('show', 'active');
+        document.getElementById("booking-tab").classList.add('active');
+        document.getElementById("users-tab").classList.remove('show', 'active');
+        document.getElementById("user-tab").classList.remove('active');
+    }
+
+    var v = localStorage.getItem("i");
+    if (v == 2){
+        document.getElementById("blocks-tab").classList.add('show', 'active');
+        document.getElementById("blocked-tab").classList.add('active');
+        document.getElementById("customers-tab").classList.remove('show', 'active');
+        document.getElementById("customer-tab").classList.remove('active');
+    }
+</script>
 @endsection

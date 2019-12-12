@@ -5,16 +5,17 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
         <a class="btn btn-outline-dark" href="/home/">Back To home</a><br><br>
-            <div class="card">
-                <div class="card-header"> <h1>Harga</h1></div>
+            <div class="card card-shadow">
+                <div class="card-header"> <h1>Price</h1></div>
                     <div class="card-body">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Product</th>
-                                    <th scope="col">Diskon</th>
-                                    <th scope="col">Harga</th>
+                                    <th scope="col">Discount</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Discount Price</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -25,6 +26,7 @@
                                     <td>{{ infoProduct($price->product_id)->name }}</td>
                                     <td>{{ $price->diskon }}%</td>
                                     <td>{{ $price->harga }}</td>
+                                    <td>{{ $price->harga - $price->harga * $price->diskon/100 }}</td>
                                     <td>
                                         <a class="btn btn-outline-dark" href="/price/edit/{{$price->id}}" >Info</a>
                                     </td>

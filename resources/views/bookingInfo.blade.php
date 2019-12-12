@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
         <a class="btn btn-outline-dark" href="/booking/">Back To list</a><br><br>
-            <div class="card">
+            <div class="card card-shadow">
                 <div class="card-header">
                     <div class="float-md-right">
                         @if ($booking->status == "pending")
@@ -14,11 +14,11 @@
                             </a>
                         @elseif($booking->status == "diterima")
                             <a href="#" class="btn btn-outline-success" style="cursor:default;">
-                                Diterima
+                                Accepted
                             </a>
                         @else
                             <a href="#" class="btn btn-outline-danger" style="cursor:default;">
-                                Cancel
+                                Rejected
                             </a>
                         @endif
                     </div>
@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <form>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nama</label>
+                            <label for="exampleInputEmail1">Name</label>
                             <input type="text" readonly class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                         value="{{ infoUser($booking->user_id)->name }}">
                         </div>
@@ -43,30 +43,30 @@
                         </div>
                         @if ($booking->status == "diterima" )
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Teraphis</label>
+                            <label for="exampleInputEmail1">Teraphist</label>
                             <input type="text" readonly class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                        value="{{ infoTeraphis($booking->order)->nama }}">
+                        value="{{ infoTeraphis($booking->order, strftime("%A", strtotime($booking->date)), $booking->teraphist)->nama }}">
                         <br>
-                        <label for="ruangan">Ruangan</label>
+                        <label for="ruangan">Room</label>
                           <input type="text" readonly class="form-control" id="ruangan" aria-describedby="emailHelp"
                           value="{{ $booking->room }}">
                           <br>
-                        <label for="code">Kode</label>
+                        <label for="code">Code</label>
                           <input type="text" readonly class="form-control" id="code" aria-describedby="emailHelp"
                            value="{{ $booking->code }}">
                         </div>
-                            <p align="center" class="text-black-50">Pembookingan telah diterima</p>
+                            <p align="center" class="text-black-50">Booking has been accepted</p>
                         @elseif($booking->status == "cancel")
                         <div class="form-group">
-                          <label for="pesan">Pesan</label>
+                          <label for="pesan">Message</label>
                           <input type="text" readonly class="form-control" id="pesan" aria-describedby="emailHelp"
                             value="{{ $booking->message }}">
                         </div>
-                        <p align="center" class="text-red-50">Pembookingan telah dibatalkan</p>
+                        <p align="center" class="text-red-50">Booking has been rejected</p>
                         @else
                         <center>
-                            <a class="btn btn-outline-danger" data-toggle="modal" data-target="#modalCancel">Batalkan</a>
-                            <a class="btn btn-outline-success" @if($teraphis->isNotEmpty()) data-toggle="modal" data-target="#modalDone" @endif >Diterima</a>
+                            <a class="btn btn-outline-danger" data-toggle="modal" data-target="#modalCancel">Reject</a>
+                            <a class="btn btn-outline-success" @if($teraphis->isNotEmpty()) data-toggle="modal" data-target="#modalDone" @endif >Accept</a>
                         </center>
                         @endif
                     </form>
@@ -90,28 +90,30 @@
                               </select>
                             </div>
                             <div class="modal-body">
-                              <label for="selectRoom">Ruangan</label>
+                              <label for="selectRoom">Room</label>
                               <select id="selectRoom" class="form-control" name="room">
-                                <option selected="selected" value="Lavender 1">Lavender 1</option>
-                                <option value="Lavender 2">Lavender 2</option>
-                                <option value="Magnolia 1">Magnolia 1</option>
-                                <option value="Magnolia 2">Magnolia 2</option>
-                                <option value="Dendalion 1">Dendalion 1</option>
-                                <option value="Dendalion 2">Dendalion 2</option>
-                                <option value="Desk 1">Desk 1</option>
-                                <option value="Desk 2">Desk 2</option>
-                                <option value="Desk 3">Desk 3</option>
-                                <option value="Salon 1">Salon 1</option>
-                                <option value="Salon 2">Salon 2</option>
-                                <option value="Chair 1">Chair 1</option>
-                                <option value="Chair 2">Chair 2</option>
-                                <option value="Chair 3">Chair 3</option>
-                                <option value="Chair 4">Chair 4</option>
+                                <option selected="selected" value="Lily 1">Lily 1</option>
+                                <option value="Lily 2">Lily 2</option>
+                                <option value="Aster 1">Aster 1</option>
+                                <option value="Aster 2">Aster 2</option>
+                                <option value="Aster 3">Aster 3</option>
+                                <option value="Orchid 1">Orchid 1</option>
+                                <option value="Orchid 2">Orchid 2</option>
+                                <option value="Orchid 3">Orchid 3</option>
+				<option value="Lavender 1">Lavender 1</option>
+				<option value="Lavender 2">Lavender 2</option>
+				<option value="Dandelion 1">Dandelion 1</option>	
+				<option value="Dandelion 2">Dandelion 2</option>
+				<option value="Magnolia 1">Magnolia 1</option>
+				<option value="Magnolia 2">Magnolia 2</option>
+				<option value="Lotus 1">Lotus 1</option>
+				<option value="Lotus 2">Lotus 2</option>
+				<option value="Lotus 3">Lotus 3</option>
                               </select>
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                              <button type="submit" class="btn btn-success">Terima Booking</a>
+                              <button type="submit" class="btn btn-success">Accept Booking</a>
                             </div>
                         </div>
                       </div>
@@ -123,20 +125,20 @@
                       <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Hapus Booking</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Reject Booking</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
                           </div>
                             <div class="modal-body">
 
-                              <label for="pesan" class="col-form-label" style="float: left;">Pesan:</label>
-                              <textarea name="pesan" class="form-control" id="pesan" placeholder="Pesan kenapa pesanan dibatalkan" required></textarea>
+                              <label for="pesan" class="col-form-label" style="float: left;">Message:</label>
+                              <textarea name="pesan" class="form-control" id="pesan" placeholder="Message why this booking was rejected" required></textarea>
 
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                              <button type="submit" class="btn btn-danger">Cancel Booking</a>
+                              <button type="submit" class="btn btn-danger">Reject Booking</a>
                             </div>
                         </div>
                       </div>

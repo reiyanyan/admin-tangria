@@ -1,11 +1,10 @@
-@extends('layouts.app')
+  @extends('layouts.app')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
         <a class="btn btn-outline-dark" href="/user/">Back To list</a><br><br>
-        <br><br>
             <div class="card">
                 <div class="card-header">
 		@if(getRole()==2)
@@ -28,7 +27,7 @@
                                 </button>
                               </div>
                               <div class="modal-body">
-                                <h1>Yakin ingin Block <b>{{ $user->name }}</b> ?</h1>
+                                <h1>Block user <b>{{ $user->name }}</b> ?</h1>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -39,6 +38,8 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="card-body">
                     {!! Form::open(['url' => 'user/edit', 'method' => 'POST', 'files' => true]) !!}
                     {{ Form::token() }}
@@ -55,7 +56,7 @@
                         <input name="avatar" type="file" class="form-control-file" accept="image/*" id="exampleFormControlFile1">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Nama</label>
+                        <label for="exampleInputEmail1">Name</label>
                         <input type="text" name="nama" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                             placeholder="Isikan nama user" value="{{ $user->name }}">
                     </div>
@@ -70,8 +71,8 @@
                             value="{{ $user->phone }}">
                     </div>
                     <div>
-                        <a href="../" class="btn btn-outline-info">Batal</a>
-                        <button type="submit" class="btn btn-warning">Simpan</button>
+                        <a href="../" class="btn btn-outline-info">Cancel</a>
+                        <button type="submit" class="btn btn-warning">Save</button>
                     </div>
                     {!! Form::close() !!}
                 </div>

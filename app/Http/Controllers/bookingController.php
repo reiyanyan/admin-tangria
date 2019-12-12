@@ -12,6 +12,7 @@ use LaravelFCM\Message\PayloadNotificationBuilder;
 use FCM;
 use App\Teraphi;
 use App\Inbox;
+use Carbon\Carbon;
 
 class bookingController extends Controller
 {
@@ -30,20 +31,37 @@ class bookingController extends Controller
         return view('book')->with('bookings', $bookings);
     }
     public function searchUser(Request $request){
-        return  DB::table('bookings')->select('bookings.id','users.name','bookings.date','bookings.status','products.name AS order')->join('users', 'bookings.user_id', '=', 'users.id')->join('products', 'bookings.order', '=', 'products.id')->where('users.name','LIKE', '%'.$request->name.'%')->orWhere('code', $request->name)->get();
-        // return Booking::hasMany('App\User')->where('name','LIKE', '%'.$request->name.'%')->get();
+        setlocale(LC_TIME, 'id_ID.UTF8', 'id_ID.UTF-8', 'id_ID.8859-1', 'id_ID', 'IND.UTF8', 'IND.UTF-8', 'IND.8859-1', 'IND', 'Indonesian.UTF8', 'Indonesian.UTF-8', 'Indonesian.8859-1', 'Indonesian', 'Indonesia', 'id', 'ID');
+        $bookings = DB::table('bookings')
+                ->select('bookings.id','users.name','bookings.room','bookings.date','bookings.status','products.name AS order')
+                ->join('users', 'bookings.user_id', '=', 'users.id')
+                ->join('products', 'bookings.order', '=', 'products.id')
+                ->where('users.name','LIKE', '%'.$request->name.'%')
+                ->orWhere('code', $request->name)
+                ->get();
+
+        foreach ($bookings as $key => $booking) {
+            $booking->date = strftime("%A, %B %d %Y. %H:%M", strtotime($booking->date));
+        }
+
+        return $bookings;
     }
     public function searchDate(Request $request){
-        // return  DB::table('bookings')->select('bookings.id','users.name','bookings.date','bookings.status','products.name AS order')->join('users', 'bookings.user_id', '=', 'users.id')->join('products', 'bookings.order', '=', 'products.id')->where('users.name','LIKE', '%'.$request->name.'%')->get();
-        // return Booking::hasMany('App\User')->where('name','LIKE', '%'.$request->name.'%')->get();
+        setlocale(LC_TIME, 'id_ID.UTF8', 'id_ID.UTF-8', 'id_ID.8859-1', 'id_ID', 'IND.UTF8', 'IND.UTF-8', 'IND.8859-1', 'IND', 'Indonesian.UTF8', 'Indonesian.UTF-8', 'Indonesian.8859-1', 'Indonesian', 'Indonesia', 'id', 'ID');
         $carbon = new \Carbon\Carbon($request->name);
         $carbon = $carbon->format('Y-m-d');
-        return DB::table('bookings')->select('bookings.id','users.name','bookings.date','bookings.status','products.name AS order')->join('users', 'bookings.user_id', '=', 'users.id')->join('products', 'bookings.order', '=', 'products.id')->where('bookings.date','LIKE', '%'.$carbon.'%' )->get();
+        $bookings = DB::table('bookings')->select('bookings.id','users.name','bookings.room','bookings.date','bookings.status','products.name AS order')->join('users', 'bookings.user_id', '=', 'users.id')->join('products', 'bookings.order', '=', 'products.id')->where('bookings.date','LIKE', '%'.$carbon.'%' )->get();
+
+        foreach ($bookings as $key => $booking) {
+            $booking->date = strftime("%A, %B %d %Y. %H:%M", strtotime($booking->date));
+        }
+
+        return $bookings;
     }
     public function store(Request $request)
     {
         $user = User::where('id', $request->user_id)->first();
-        
+
         if($user->role != 0){
             $booking = new Booking;
             $booking->user_id = $request->user_id;
@@ -58,7 +76,7 @@ class bookingController extends Controller
                 'success' => 'false'
             ]);
         }
-        
+
     }
     public function history(Request $request){
         $booking = Booking::where('user_id', $request->user_id)->orderBy('created_at', 'DESC')->get();
@@ -122,6 +140,7 @@ $token = array(infoUser($booking->user_id)->fcm_token);
         $booking = Booking::find($request->id);
         $booking->status = "diterima";
         $booking->room = $request->room;
+        $booking->teraphist = $teraphis;
         $booking->code = date('ymd', strtotime($booking->date)). $random;
         $booking->save();
 
@@ -149,7 +168,7 @@ public function kirimWoe($token, $title, $message){
             "message" 	=> $message,
             "title"		=> $title
         );
-        
+
         $fields = array
         (
             'registration_ids' 	=> $token,
@@ -163,7 +182,7 @@ public function kirimWoe($token, $title, $message){
             'Authorization: key=' . API_ACCESS_KEY,
             'Content-Type: application/json'
         );
-         
+
         $ch = curl_init();
         curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
         curl_setopt( $ch,CURLOPT_POST, true );

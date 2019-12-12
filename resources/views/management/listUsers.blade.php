@@ -8,20 +8,19 @@
             </div>
             <div class="col">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-primary filter-default active" onclick="showAll()">
-                        <input type="radio" name="options" id="option1" autocomplete="off" checked> Semua
+                    <label class="btn btn-outline-dark filter-default active" onclick="showAll()">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked> All
                     </label>
-                    <label class="btn btn-outline-primary filter-pelanggan" onclick="showPelanggan()">
-                        <input type="radio" name="options" id="option1" autocomplete="off" checked> Pelanggan
+                    <label class="btn btn-outline-dark filter-pelanggan" onclick="showPelanggan()">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked> Customer
                     </label>
-                    <label class="btn btn-outline-primary filter-pegawai" onclick="showPegawai()">
-                        <input type="radio" name="options" id="option2" autocomplete="off"> Pegawai
+                    <label class="btn btn-outline-dark filter-pegawai" onclick="showPegawai()">
+                        <input type="radio" name="options" id="option2" autocomplete="off"> Employee
                     </label>
-                    <label class="btn btn-outline-primary filter-block" onclick="showBlock()">
-                        <input type="radio" name="options" id="option3" autocomplete="off"> Block
+                    <label class="btn btn-outline-dark filter-block" onclick="showBlock()">
+                        <input type="radio" name="options" id="option3" autocomplete="off"> Blocked
                     </label>
                 </div>
-                <a href="/register" class="ml-5 btn btn-primary btn-md">Buat Akun Baru</a>
             </div>
         </div>
     </div>
@@ -31,8 +30,8 @@
         <div class="row">
             <div class="col-12">
                 <div class="input-group mb-3">
-                    <div class="input-group-prepend"><span id="basic-addon1" class="input-group-text">cari</span></div>
-                    <input type="text" id="nameSearch" placeholder="ketikan nama user" aria-label="Username"
+                    <div class="input-group-prepend"><span id="basic-addon1" class="input-group-text">search</span></div>
+                    <input type="text" id="nameSearch" placeholder="search user..." aria-label="Username"
                         aria-describedby="basic-addon1" class="form-control">
                 </div>
             </div>
@@ -41,14 +40,14 @@
 </div>
 <div class="row justify-content-center">
     <div class="col-8">
-        <div class="card">
+        <div class="card card-shadow">
             <table class="table" style="margin-bottom:0px;">
                 <thead>
                     <tr>
                         <th scope="col">Avatar</th>
-                        <th scope="col">Nama</th>
+                        <th scope="col">Name</th>
                         <th scope="col">E-mail</th>
-                        <th scope="col">No HP</th>
+                        <th scope="col">Phone</th>
                         <th scope="col">Status</th>
                         <th scope="col">Edit</th>
                     </tr>
@@ -62,11 +61,11 @@
                         <td scope="col">{{$user->phone}}</td>
                         <td scope="col">
                             @if($user->role===1)
-                            Pelanggan
+                            Customer
                             @elseif($user->role===3)
-                            Pegawai
+                            Employee
                             @elseif($user->role===0)
-                            Block
+                            Blocked
                             @endif()
                         </td>
                         <td scope="col">
@@ -105,8 +104,8 @@
                 </center>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <button type="submit" form="editForm" class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" form="editForm" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
@@ -177,9 +176,9 @@
                                     if (element.role == 0) {
                                         role = 'block';
                                     } else if (element.role == 1) {
-                                        role = 'pelanggan';
+                                        role = 'customer';
                                     } else if (element.role == 3) {
-                                        role = 'pegawai';
+                                        role = 'employee';
                                     }
                                     var html =
                                         `
@@ -303,32 +302,32 @@
                     roleOption =
                         `
                         <option disabled>Status...</option>
-                        <option value="1">Pelanggan</option>
-                        <option value="3" selected="selected">Pegawai</option>
+                        <option value="1">Customer</option>
+                        <option value="3" selected="selected">Employee</option>
                         <option value="0">Block</option>
                     `
                 } else if (data.role == 1) {
                     roleOption =
                         `
                         <option disabled>Status...</option>
-                        <option value="1" selected="selected">Pelanggan</option>
-                        <option value="3">Pegawai</option>
+                        <option value="1" selected="selected">Customer</option>
+                        <option value="3">Employee</option>
                         <option value="0">Block</option>
                     `
                 } else if (data.role == 0) {
                     roleOption =
                         `
                         <option disabled>Status...</option>
-                        <option value="1">Pelanggan</option>
-                        <option value="3">Pegawai</option>
+                        <option value="1">Customer</option>
+                        <option value="3">Employee</option>
                         <option value="0" selected="selected">Block</option>
                     `
                 } else {
                     roleOption =
                         `
                         <option disabled selected="selected">Status...</option>
-                        <option value="1">Pelanggan</option>
-                        <option value="3">Pegawai</option>
+                        <option value="1">Customer</option>
+                        <option value="3">Employee</option>
                         <option value="0">Block</option>
                     `
                 }
@@ -355,7 +354,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="staticEmail" class="col-sm-2 col-form-label">Nama</label>
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="staticEmail" value="` +
                     data.name +
@@ -371,7 +370,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="staticEmail" class="col-sm-2 col-form-label">No.HP</label>
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Phone</label>
                         <div class="col-sm-10">
                             <input type="number" class="form-control" id="staticEmail" value="` +
                     data.phone +
@@ -380,7 +379,7 @@
                     </div>
                     <a class="btn btn-outline-danger btn-md" href="/ubah-password/` +
                     data.id +
-                    `"><b>Ubah Sandi?</b></a>
+                    `"><b>Change Password?</b></a>
                     {!! Form::close() !!}
                 `;
                 $('.modal-edit-body').append(html);

@@ -5,9 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
         <a class="btn btn-outline-dark" href="/product/">Back To list</a><br><br>
-            <div class="card">
+            <div class="card card-shadow">
                 <div class="card-header">
-                    <h4>Product baru</h4>
+                    <h4>New Product</h4>
                 </div>
                 <div class="card-body">
                     {!! Form::open(['url' => 'product', 'method' => 'POST', 'files' => true]) !!}
@@ -17,9 +17,9 @@
                         <input name="image" required type="file" class="form-control-file" id="exampleFormControlFile1">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Nama</label>
+                        <label for="exampleInputEmail1">Name</label>
                         <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            placeholder="Isikan nama product" value="" required>
+                            placeholder="Fill in the product's name" value="" required>
                     </div>
                     <div class="form-group">
                         <label for="time">Category</label>
@@ -29,17 +29,17 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Deskripsi</label>
+                        <label for="exampleInputEmail1">Description</label>
                         <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="5" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="note">Note</label>
                         <textarea type="text" name="note" class="form-control" id="note"
-                            placeholder="Isikan Ketentuan yang Harus Dibawa Pelanggan" rows="3"></textarea>
+                            placeholder="Fill in the provisions that must be brought by customer" rows="3"></textarea>
                     </div>
                     <div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-warning">Simpan</button>
+                            <button type="submit" class="btn btn-warning">Save</button>
                         </div>
                     </div>
                     {!! Form::close() !!}

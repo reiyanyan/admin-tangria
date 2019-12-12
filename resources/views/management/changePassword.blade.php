@@ -7,16 +7,16 @@
 
         @if(Session::has('message'))
         <div class="alert alert-success" role="alert">
-            <h4 class="alert-heading">Berhasil mengubah Password!</h4>
+            <h4 class="alert-heading">Change password success</h4>
             <p>{!! Session::get('message') !!}</p>
             <hr>
-            <p class="mb-0">Segera beritahu {{ $user->name }} password baru mereka!.</p>
+            <p class="mb-0">Immediately tell {{ $user->name }} his/her new password!.</p>
         </div>
         @endif
-        <a class="btn btn-outline-danger" href="{{ URL::previous() }}">Batal</a><br><br>
+        <a class="btn btn-outline-danger" href="{{ URL::previous() }}">Cancel</a><br><br>
             <div class="card">
                 <div class="card-header">
-                    <h4>Ganti Password <b>{{ $user->name }}</b></h4>
+                    <h4>Change Password <b>{{ $user->name }}</b></h4>
                 </div>
                 <div class="card-body">
                     {!! Form::open(['url' => 'ubah-password', 'method' => 'POST', 'files' => false]) !!}
@@ -30,11 +30,11 @@
                         <h3 class="mt-2"><b>{{ $user->name }}</b></h3>
                         <input type="hidden" name="id" value="{{ $user->id }}">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Password Baru</label>
-                            <input type="password" name="newPassword" class="form-control" id="exampleInputEmail1" placeholder="Isikan Password baru untuk {{ $user->name }}">
+                            <label for="exampleInputEmail1">New Password</label>
+                            <input type="password" name="newPassword" class="form-control" id="exampleInputEmail1" placeholder="Fill in the password for {{ $user->name }}">
                         </div>
-                        <p>User tidak akan bisa login dengan password yang lama setelah anda rubah, segera beritahu kepada user password baru mereka!</p>
-                        <input class="btn btn-warning" type="submit" value="Ubah Password">
+                        <p>User will not be able to login with their old password, immediately tell {{ $user->name }} his/her new password!</p>
+                        <input class="btn btn-warning" type="submit" value="Change Password">
                     </center>
                     {!! Form::close() !!}
                 </div>

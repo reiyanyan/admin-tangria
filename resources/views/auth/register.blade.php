@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><p style="display:inline-block;float:left;" >{{ __('Register') }}</p> <a class="btn btn-outline-primary" style="display:inline-block;float:right;" href="{{ url()->previous() }}">Kembali</a></div>
+                <div class="card-header"><p style="display:inline-block;float:left;" >{{ __('Register') }}</p> <a class="btn btn-outline-primary" style="display:inline-block;float:right;" href="{{ url()->previous() }}">Back</a></div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">

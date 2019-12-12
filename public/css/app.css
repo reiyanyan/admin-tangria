@@ -1,3 +1,93 @@
+body {
+    background: #EDDFD6 !important;
+}
+
+.navbar-light{
+    background: #EEEEEF !important;
+    border-bottom: 5px solid #D7CBC3 !important;
+}
+
+.card-shadow{
+    border-right: 4px solid #DFD0CC !important;
+    border-bottom: 5px solid #DFD0CC !important;
+    border-radius: 10px !important;
+}
+
+.card-shadow .card-header{
+    background: #EDEDED !important;
+}
+
+.card-shadow .card-footer{
+    background: #EDEDED !important;
+}
+
+.login-card{
+    border-right: 3px solid #DFD0CC !important;
+    border-bottom: 4px solid #DFD0CC !important;
+    border-radius: 10px !important;
+}
+
+.login-card .btn {
+    border: 0px solid #AA73A8 !important;
+}
+
+.btn-primary {
+    background-color: #AF76AD !important;
+    border: 0px solid #AA73A8 !important;
+}
+
+.btn-primary:hover{
+    background-color: #986496 !important;
+}
+
+.nav-link{
+    color: #AF76AD !important
+}
+
+.nav-item .active{
+    color: white !important;
+    background: #AF76AD !important;
+}
+
+.btn-outline-dark{
+    color: #AF76AD !important;
+    background: #EDEDED !important;
+    border: 1px solid #AF76AD !important;
+}
+
+.btn-outline-dark:hover{
+    color: white !important;
+    background: #AF76AD !important;
+    border: 1px solid #AF76AD !important;
+    transition: 0.2s !important;
+}
+
+.btn-group-toggle .active{
+    color: white !important;
+    background: #AF76AD !important;
+    border: 1px solid #AF76AD !important;
+}
+
+
+#avatar-login{
+    width: 30%;
+    margin-bottom: 20px;
+}
+
+#navbarDropdown{
+    color: black !important;
+}
+
+#login_title{
+    width: 8%;
+}
+
+#avatar-icon{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
 @import url(https://fonts.googleapis.com/css?family=Nunito);/*!
  * Bootstrap v4.1.2 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
