@@ -13,6 +13,7 @@ use FCM;
 use App\Teraphi;
 use App\Inbox;
 use Carbon\Carbon;
+use Helper;
 
 class bookingController extends Controller
 {
@@ -60,16 +61,30 @@ class bookingController extends Controller
     }
     public function store(Request $request)
     {
-        $user = User::where('id', $request->user_id)->first();
+        //DC24
+        $order = $request->order;
+        $user_id = $request->user_id;
+        $date = $request->date;
+        if(!isset($order) || !isset($user_id) || !isset($date)) return Helper::composeReply('ERROR', 'parameters incomplete!');
+
+        $cek_booking = Booking::where('user_id', $user_id)->get();
+        if(!isset($cek_booking) || count($cek_booking) < 1) $is_first = 'true';
+        else $is_first = 'false';
+        
+        $user = User::where('id', $user_id)->first();
 
         if($user->role != 0){
+            if($is_first == 'true'){
+                
+            }
             $booking = new Booking;
-            $booking->user_id = $request->user_id;
-            $booking->order = $request->order;
-            $booking->date = $request->date;
+            $booking->user_id = $user_id;
+            $booking->order = $order;
+            $booking->date = $date;
             $booking->save();
             return response()->json([
-                'success' => 'true'
+                'success' => 'true',
+                'is_first_book' => $is_first
             ], 200);
         } else {
             return response()->json([
@@ -152,7 +167,7 @@ $token = array(infoUser($booking->user_id)->fcm_token);
         $inbox->teraphis = $request->teraphis;
         $inbox->save();
 
-$token = array(infoUser($booking->user_id)->fcm_token);
+        $token = array(infoUser($booking->user_id)->fcm_token);
 
         $this->kirimWoe($token, $title, $body);
 

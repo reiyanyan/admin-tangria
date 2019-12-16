@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Inbox;
 use App\Booking;
 use Illuminate\Support\Facades\DB;
+use Helper;
 
 
 class userController extends Controller
@@ -20,7 +21,7 @@ class userController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['login', 'searchUser', 'store', 'phoneStore', 'medsos','info', 'inbox']]);;
+        $this->middleware('auth', ['except' => ['test_helper', 'login', 'searchUser', 'store', 'phoneStore', 'medsos','info', 'inbox']]);;
     }
 
     protected function authenticated(){
@@ -73,6 +74,7 @@ class userController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
+        $user->job = $request->job;
         $user->fcm_token = $request->fcm_token;
         $user->password = bcrypt($request->password);
         $user->save();
@@ -117,8 +119,8 @@ class userController extends Controller
     public function medsos(Request $request)
     {
         $check = User::where('email',$request->email)->where('password',$request->provider)->where('role','!=',0);
-        if($check->count()<=0){
-            //kalau belum registrasi
+        if(count($check) <= 0){
+            //belum registrasi
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
@@ -151,7 +153,8 @@ class userController extends Controller
 
             return response()->json([
                 'success' => 'true',
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'role' => $user->role
             ], 200);
         }else{
             return response()->json([
@@ -161,7 +164,11 @@ class userController extends Controller
     }
     public function info(Request $request)
     {
-        $user = User::where('id',$request->id)->first();
+        // DC24
+        $id = $request->id;
+        if(!isset($id)) return Helper::composeReply('ERROR', 'Harap masukkan ID user');
+
+        $user = User::where('id',$id)->first();
         if(substr($user->avatar, 0, 4)!="http"){
             $avatar = "http://admin.tangriaspa.com/img/avatar/".$user->avatar;
         }else{
