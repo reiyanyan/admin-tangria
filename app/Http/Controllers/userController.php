@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Inbox;
 use App\Booking;
 use Illuminate\Support\Facades\DB;
-use Helper;
 
 
 class userController extends Controller
@@ -19,9 +18,10 @@ class userController extends Controller
      *
      * @return void
      */
+
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['test_helper', 'login', 'searchUser', 'store', 'phoneStore', 'medsos','info', 'inbox']]);;
+        $this->middleware('auth', ['except' => ['test_helper', 'login', 'searchUser', 'store', 'phoneStore', 'medsos','info', 'inbox', 'test']]);;
     }
 
     protected function authenticated(){
@@ -34,14 +34,17 @@ class userController extends Controller
         $blocks = User::where('role','0')->orderBy('created_at', 'DESC')->get();
         return view('userPage', ['users' => $users, 'cashiers' => $cashiers, 'blocks' => $blocks]);
     }
+
     public function searchUser(Request $request){
         return User::where('name','LIKE', '%'.$request->name.'%')->where('role', '1')->get();
     }
+
     public function getDataUser(Request $request){
         if(getRole()===2){
             return User::where('id',$request->id)->where('role','!=','2')->get()->first();
         }
     }
+
 
     public function saveUserData(Request $request){
         if(getRole()===2){
@@ -63,11 +66,13 @@ class userController extends Controller
         }
     }
 
+
     public function searchUsers(Request $request){
         if(getRole()===2){
             return User::select('id','name','email','role','avatar','phone')->where('name','LIKE', '%'.$request->name.'%')->where('role','!=', '2')->get();
         }
     }
+
     public function store(Request $request)
     {
         $user = new User;
@@ -84,6 +89,7 @@ class userController extends Controller
         ], 200);
     }
 
+
     public function refreshToken(Request $request){
         $user = User::where('id', $request->id)->first();
         $user->fcm_token = $request->fcm_token;
@@ -92,6 +98,7 @@ class userController extends Controller
             'success' => 'success'
         ]);
     }
+
 
     public function inbox(Request $request){
         $inbox = Inbox::where('user_id', $request->user_id)->orderBy('created_at', 'DESC')->get();
@@ -107,6 +114,7 @@ class userController extends Controller
         , 200);
     }
 
+
     public function phoneStore(Request $request)
     {
         $user = User::find($request->id);
@@ -116,6 +124,7 @@ class userController extends Controller
             'success' => 'true'
         ], 200);
     }
+
     public function medsos(Request $request)
     {
         $check = User::where('email',$request->email)->where('password',$request->provider)->where('role','!=',0);
@@ -142,6 +151,7 @@ class userController extends Controller
             ], 200);
         }
     }
+
     public function login(Request $request)
     {
         $user = User::where('email',$request->email)->where('role','!=',0)->first();
@@ -162,11 +172,11 @@ class userController extends Controller
             ], 401);
         }
     }
+
     public function info(Request $request)
     {
-        // DC24
         $id = $request->id;
-        if(!isset($id)) return Helper::composeReply('ERROR', 'Harap masukkan ID user');
+        if(!isset($id)) return composeReply('ERROR', 'Harap masukkan ID user');
 
         $user = User::where('id',$id)->first();
         if(substr($user->avatar, 0, 4)!="http"){
@@ -181,8 +191,86 @@ class userController extends Controller
             'email' => $user->email,
             'avatar' => $avatar,
             'no_hp' => $user->phone,
+            'pekerjaan' => $user->job
         ], 200);
     }
+
+
+    public function updateProfile(Request $request){
+        $id = $request->id;
+        if(!isset($id)) return composeReply('ERROR', 'please enter user ID!');
+
+        $user = User::find($id)->first();
+        if(!isset($user)) return composeReply('ERROR', 'user not found, or ID not valid!');
+
+        // if(!isset($request->email)) $email = $user->email;
+        // else $email = $request->email;
+
+        // if(!empty($request->file('avatar'))){
+        //     Storage::delete('img/avatar/'.$user->avatar);
+        //     $file       = $request->file('avatar');
+        //     $fileName   = randomAvatarName(8).".".$file->getClientOriginalExtension();
+        //     $request->file('avatar')->move("img/avatar", $fileName);
+
+        //     $update = User::update(array(
+        //                 'name' => $request->name,
+        //                 'email' => $email,
+        //                 'avatar' => $fileName,
+        //                 'phone' => $request->phone,
+        //                 'job' => $request->job
+        //             ));
+        // }else{
+        //     $update = User::update(array(
+        //                 'name' => $request->name,
+        //                 'email' => $email,
+        //                 'phone' => $request->phone,
+        //                 'job' => $request->job
+        //             ));
+        // }
+        $MQ = MQ::where('user_id', $id)->first();
+        if(isset($MQ)){
+            $setMQ = MQ::where('user_id', $id)
+                    ->update(array(
+                    'mq_rematik' => $request->mq_rematik,
+                    'mq_jantung' => $request->mq_rematik,
+                    'mq_tekanan_darah' => $request->mq_tekanan_darah,
+                    'mq_tulang_belakang' => $request->mq_tulang_belakang,
+                    'mq_asamurat' => $request->mq_asamurat,
+                    'mq_asma' => $request->mq_asma,
+                    'mq_hamil' => $request->mq_hamil,
+                    'mq_datang_bulan' => $request->mq_datang_bulan,
+                    'mq_alat_bantu' => $request->mq_alat_bantu,
+                    'mq_operasi' => $request->mq_operasi,
+                    'mq_makan' => $request->mq_makan,
+                    'mq_menghindari_bagian' => $request->mq_menghindari_bagian
+                ));
+        }else{
+             $setMQ = MQ::insert(array(
+                        'user_id' => $id,
+                        'mq_rematik' => $request->mq_rematik,
+                        'mq_jantung' => $request->mq_rematik,
+                        'mq_tekanan_darah' => $request->mq_tekanan_darah,
+                        'mq_tulang_belakang' => $request->mq_tulang_belakang,
+                        'mq_asamurat' => $request->mq_asamurat,
+                        'mq_asma' => $request->mq_asma,
+                        'mq_hamil' => $request->mq_hamil,
+                        'mq_datang_bulan' => $request->mq_datang_bulan,
+                        'mq_alat_bantu' => $request->mq_alat_bantu,
+                        'mq_operasi' => $request->mq_operasi,
+                        'mq_makan' => $request->mq_makan,
+                        'mq_menghindari_bagian' => $request->mq_menghindari_bagian
+                    ));
+        }
+
+        if(!isset($setMQ)) return composeReply('ERROR', 'failed update profile, or data not valid!');
+
+        return responseSuccess([
+                                        'success' => 'true',
+                                        'message' => 'berhasil memperbarui profil!'
+                                        ]);
+    }
+
+
     public function block(Request $request)
     {
         $user = User::find($request->id);
@@ -195,6 +283,7 @@ class userController extends Controller
             return redirect()->back();
         }
     }
+
     public function update(Request $request)
     {
         $user = User::where('id',$request->id);
@@ -203,11 +292,13 @@ class userController extends Controller
             'succes' => 'true'
         ], 200);
     }
+
     public function editWeb(Request $request)
     {
         $user = User::find($request->id);
         return view('userEdit')->with('user',$user);
     }
+
     public function updateWeb(Request $request)
     {
         $user = User::find($request->id);
@@ -225,6 +316,7 @@ class userController extends Controller
         $user->save();
         return redirect()->back();
     }
+
     public function management(){
         if(getRole()===2){
             $users = User::where('role','!=','2')->orderBy('created_at', 'DESC')->paginate(20);
@@ -234,6 +326,7 @@ class userController extends Controller
             return view(auth.login);
         }
     }
+
     public function ubahPasswordUserView(Request $request){
         if(getRole()===2){
             $user = User::where('id',$request->id)->get()->first();
@@ -246,6 +339,7 @@ class userController extends Controller
             return redirect('/login');
         }
     }
+
     public function ubahPasswordUser(Request $request){
         if(getRole()===2){
             $user = User::where('id',$request->id)->get()->first();

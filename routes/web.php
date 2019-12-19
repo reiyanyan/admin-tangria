@@ -23,6 +23,8 @@ Route::get('/booking','bookingController@index')->name('bookingPage');
 Route::get('/booking/{id}','bookingController@infoWeb')->name('bookingInfo');
 Route::get('/booking/cancel/{id}','bookingController@bookingCancel')->name('bookingCancel');
 Route::get('/booking/done/{id}','bookingController@bookingDone')->name('bookingDone');
+Route::get('/booking/rejected/{id}','bookingController@bookingRejected')->name('bookingRejected');
+Route::get('/booking/selesai/{id}','bookingController@bookingSelesai')->name('bookingSelesai');
 
 
 Route::get('/product','productController@home')->name('productPage');

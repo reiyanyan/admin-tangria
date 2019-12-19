@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Booking;
+use App\Medical_questioner as MQ;
 use App\User;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
@@ -22,15 +23,18 @@ class bookingController extends Controller
      *
      * @return void
      */
+
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['history', 'store','searchUser','searchDate']]);
     }
     //
+
     public function index(){
         $bookings = Booking::orderBy('created_at', 'DESC')->paginate(10);
         return view('book')->with('bookings', $bookings);
     }
+
     public function searchUser(Request $request){
         setlocale(LC_TIME, 'id_ID.UTF8', 'id_ID.UTF-8', 'id_ID.8859-1', 'id_ID', 'IND.UTF8', 'IND.UTF-8', 'IND.8859-1', 'IND', 'Indonesian.UTF8', 'Indonesian.UTF-8', 'Indonesian.8859-1', 'Indonesian', 'Indonesia', 'id', 'ID');
         $bookings = DB::table('bookings')
@@ -47,6 +51,7 @@ class bookingController extends Controller
 
         return $bookings;
     }
+
     public function searchDate(Request $request){
         setlocale(LC_TIME, 'id_ID.UTF8', 'id_ID.UTF-8', 'id_ID.8859-1', 'id_ID', 'IND.UTF8', 'IND.UTF-8', 'IND.8859-1', 'IND', 'Indonesian.UTF8', 'Indonesian.UTF-8', 'Indonesian.8859-1', 'Indonesian', 'Indonesia', 'id', 'ID');
         $carbon = new \Carbon\Carbon($request->name);
@@ -59,13 +64,14 @@ class bookingController extends Controller
 
         return $bookings;
     }
+
     public function store(Request $request)
     {
         //DC24
         $order = $request->order;
         $user_id = $request->user_id;
         $date = $request->date;
-        if(!isset($order) || !isset($user_id) || !isset($date)) return Helper::composeReply('ERROR', 'parameters incomplete!');
+        if(!isset($order) || !isset($user_id) || !isset($date)) return composeReply('ERROR', 'parameters incomplete!');
 
         $cek_booking = Booking::where('user_id', $user_id)->get();
         if(!isset($cek_booking) || count($cek_booking) < 1) $is_first = 'true';
@@ -73,9 +79,16 @@ class bookingController extends Controller
         
         $user = User::where('id', $user_id)->first();
 
+        $MQ = MQ::where('user_id', $user_id)->first();
+
         if($user->role != 0){
-            if($is_first == 'true'){
-                
+            if(!isset($MQ)){
+                // hit API update profile
+                return response()->json([
+                    'success' => 'true',
+                    'first_book' => $is_first,
+                    'message' => 'please set your medical questioner!'
+                ], 200);
             }
             $booking = new Booking;
             $booking->user_id = $user_id;
@@ -84,8 +97,9 @@ class bookingController extends Controller
             $booking->save();
             return response()->json([
                 'success' => 'true',
-                'is_first_book' => $is_first
+                'first_book' => $is_first
             ], 200);
+
         } else {
             return response()->json([
                 'success' => 'false'
@@ -93,6 +107,7 @@ class bookingController extends Controller
         }
 
     }
+
     public function history(Request $request){
         $booking = Booking::where('user_id', $request->user_id)->orderBy('created_at', 'DESC')->get();
         $result = array();
@@ -113,14 +128,23 @@ class bookingController extends Controller
              'result_booking_history' => $result
          ], 200);
     }
+
     public function infoWeb(Request $request){
         $booking = Booking::find($request->id);
         $pId= $booking->order;
         setlocale(LC_TIME, 'id_ID.UTF8', 'id_ID.UTF-8', 'id_ID.8859-1', 'id_ID', 'IND.UTF8', 'IND.UTF-8', 'IND.8859-1', 'IND', 'Indonesian.UTF8', 'Indonesian.UTF-8', 'Indonesian.8859-1', 'Indonesian', 'Indonesia', 'id', 'ID');
         $day = strftime("%A", strtotime($booking->date));
         $teraphis = Teraphi::where('spesialis','LIKE','%"product_id":'.$pId.',"value":true%')->where('libur','!=',$day)->get();
-        return view('bookingInfo')->with(compact('teraphis', 'booking'));
+
+        if(getRole()===3) $is_superadmin = 'Y';
+        else $is_superadmin = 'N';
+
+        $mq = MQ::where('user_id', $booking->user_id)->first();
+        //$mq = DB::table('medical_questioner')->first();
+
+        return view('bookingInfo')->with(compact('teraphis', 'booking', 'is_superadmin', 'mq'));
     }
+
     public function bookingCancel(Request $request){
         $title = "Pesanan Dibatalkan";
         $body = $request->pesan;
@@ -137,12 +161,13 @@ class bookingController extends Controller
         $inbox->content = $body;
         $inbox->save();
 
-$token = array(infoUser($booking->user_id)->fcm_token);
+        $token = array(infoUser($booking->user_id)->fcm_token);
 
         $this->kirimWoe($token, $title, $body);
 
         return redirect()->back();
     }
+
     public function bookingDone(Request $request){
         $teraphis = $request->teraphis;
         $ruangan = $request->room;
@@ -174,7 +199,64 @@ $token = array(infoUser($booking->user_id)->fcm_token);
         return redirect()->back();
     }
 
-public function kirimWoe($token, $title, $message){
+    public function bookingRejected(Request $request){
+        $title = "Pesanan Dibatalkan";
+        $body = $request->pesan;
+
+        $booking = Booking::find($request->id);
+        $booking->status = 'rejected';
+        $booking->message = $request->pesan;
+        $booking->save();
+
+
+        $inbox = new Inbox;
+        $inbox->user_id = $booking->user_id;
+        $inbox->title = $title;
+        $inbox->content = $body;
+        $inbox->save();
+
+        $token = array(infoUser($booking->user_id)->fcm_token);
+
+        $this->kirimWoe($token, $title, $body);
+
+        return redirect()->back();
+    }
+
+    public function bookingSelesai(Request $request){
+        $id = $request->id;
+        $title = "Pesanan Selesai";
+        $body = "Hore! Pesanan kamu telah Selesai, guest comment pls!";
+
+        $booking = Booking::find($id);
+        $updateBooking = Booking::
+                            where('id', $id)
+                            ->update(array(
+                                'status' => 'selesai'
+                            ));
+        $user = User::find($booking->user_id);
+        $lastVisit = $user->visit;
+        $visit = $lastVisit + 1;                     
+        $updateUser = User::
+                        where('id', $booking->user_id)
+                        ->update(array(
+                            'visit' => $visit
+                        ));                    
+
+        $inbox = new Inbox;
+        $inbox->user_id = $booking->user_id;
+        $inbox->title = $title;
+        $inbox->content = $body;
+        $inbox->teraphis = $booking->teraphist;
+        $inbox->save();
+
+        $token = array(infoUser($booking->user_id)->fcm_token);
+
+        $this->kirimWoe($token, $title, $body);
+
+        return redirect()->back();
+    }
+
+    public function kirimWoe($token, $title, $message){
 
         define( 'API_ACCESS_KEY', 'AAAA-qBl5vM:APA91bFC7xt4sPPm9hiIEoVO2eNWFvK6CmYhbjpAslrmG_9CmQ-cpsS_lWGBHd0soaSdc0Pj4zO6psrJW7UnYlL0ekvqrsj4k6hrzWIJgy4bmLfa3R1kjAjkDMUJ42WXX0LjPj6OBnCw' );
 

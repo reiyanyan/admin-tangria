@@ -39,7 +39,7 @@ if (!function_exists('randomAvatarName')) {
     }
 }
 
-// ---- DigitalCode24 ---- //
+// DigitalCode24
 
     function testHelper(){
         dd('success');
@@ -95,12 +95,16 @@ if (!function_exists('randomAvatarName')) {
         return($result);
     }
 
+    // pengganti return json cara lama
+    function responseSuccess($paylaod){
+        return response()->json($paylaod, 200);
+    }
 
     // DC24
     function composeReply($status,$msg,$payload = null) {
         header("Content-Type: application/json");
         $reply = json_encode(array(
-                "SENDER" => "Sistem Informasi Developer Properti",
+                "SENDER" => "Tangria Spa",
                 "STATUS" => $status,
                 "MESSAGE" => $msg,
                 "PAYLOAD" => $payload));
@@ -111,7 +115,7 @@ if (!function_exists('randomAvatarName')) {
     // DC24
     function composeReply2($status,$msg,$payload = null) { //LARAVEL WAY
         $reply = json_encode(array(
-                  "SENDER" => "Sistem Informasi Developer Properti",
+                  "SENDER" => "Tangria Spa",
                   "STATUS" => $status,
                   "MESSAGE" => $msg,
                   "PAYLOAD" => $payload));

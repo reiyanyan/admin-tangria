@@ -37,7 +37,9 @@
                         <tbody id="ori-table">
 														<?php setlocale(LC_TIME, 'id_ID.UTF8', 'id_ID.UTF-8', 'id_ID.8859-1', 'id_ID', 'IND.UTF8', 'IND.UTF-8', 'IND.8859-1', 'IND', 'Indonesian.UTF8', 'Indonesian.UTF-8', 'Indonesian.8859-1', 'Indonesian', 'Indonesia', 'id', 'ID'); ?>
                             @foreach($bookings as $key => $booking)
-                                <tr @if($booking->created_at->format('Y-m-d') == date('Y-m-d')) style="color:#18dcff;" @elseif($booking->status == "cancel") style="color:#e84118" @endif>
+                                <tr @if($booking->created_at->format('Y-m-d') == date('Y-m-d')) style="color:#18dcff;" @elseif($booking->status == "cancel") style="color:#e86118"
+                                    @elseif($booking->status == "rejected") style="color:#f20000"
+                                    @endif>
                                     <th scope="row">{{ ++$key }}</th>
                                     <td>{{ DB::table('users')->where('id',$booking->user_id)->first()->name }}</td>
                                     <td>{{ DB::table('products')->where('id',$booking->order)->first()->name }}</td>

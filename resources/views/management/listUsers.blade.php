@@ -48,6 +48,7 @@
                         <th scope="col">Name</th>
                         <th scope="col">E-mail</th>
                         <th scope="col">Phone</th>
+                        <th scope="col">Kunjungan</th>
                         <th scope="col">Status</th>
                         <th scope="col">Edit</th>
                     </tr>
@@ -59,6 +60,7 @@
                         <td scope="col">{{$user->name}}</td>
                         <td scope="col">{{$user->email}}</td>
                         <td scope="col">{{$user->phone}}</td>
+                        <td scope="col">{{$user->visit}} kunjungan</td>
                         <td scope="col">
                             @if($user->role===1)
                             Customer
