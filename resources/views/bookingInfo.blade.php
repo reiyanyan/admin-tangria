@@ -33,11 +33,19 @@
                 </div>
                 <div class="card-body">
                     <form>
+                        @if($is_wild = 'N')
                         <div class="form-group">
                             <label for="exampleInputEmail1">Name</label>
                             <input type="text" readonly class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                         value="{{ infoUser($booking->user_id)->name }}">
                         </div>
+                        @else
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Name</label>
+                            <input type="text" readonly class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        value="{{ $booking->cst_name }}">
+                        </div>
+                        @endif
                         <div class="form-group">
                             <label for="exampleInputEmail1">Order</label>
                             <input type="text" readonly class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
@@ -77,6 +85,7 @@
 
                         @elseif($booking->status == 'pending')
                         <hr>
+                        @if($mq != 'none')
                           <p align="left"><b>Data medical questioner</b></p>
                           <table class="table">
                             <thead>
@@ -184,6 +193,9 @@
                               </tr>
                             </tbody>
                           </table>
+                        @else
+                            <p align="left"><b>Medical questioner data from previous system version is not found</b></p>
+                        @endif    
                           <center>
                             <a class="btn btn-outline-danger" data-toggle="modal" data-target="#modalCancel">Reject</a>
                             <a class="btn btn-outline-success" @if($teraphis->isNotEmpty()) data-toggle="modal" data-target="#modalDone" @endif >Accept</a>

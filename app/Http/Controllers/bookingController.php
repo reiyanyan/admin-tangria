@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Booking;
+use App\Booking_cs;
 use App\Medical_questioner as MQ;
 use App\User;
 use LaravelFCM\Message\OptionsBuilder;
@@ -78,10 +79,12 @@ class bookingController extends Controller
         else $is_first = 'false';
         
         $user = User::where('id', $user_id)->first();
+        if($user->role = 2) $is_cs = 'true';
+        else $is_cs = 'false';
 
         $MQ = MQ::where('user_id', $user_id)->first();
 
-        if($user->role != 0){
+        if($user->role != 0 && $user->role != 2){
             if(!isset($MQ)){
                 // hit API update profile
                 return response()->json([
@@ -92,6 +95,7 @@ class bookingController extends Controller
             }
             $booking = new Booking;
             $booking->user_id = $user_id;
+            $booking->medical_questioner = $MQ->id;
             $booking->order = $order;
             $booking->date = $date;
             $booking->save();
@@ -100,7 +104,35 @@ class bookingController extends Controller
                 'first_book' => $is_first
             ], 200);
 
-        } else {
+        }elseif($user->role == 2){
+            $setMQ = MQ::insertGetId(array(
+                    'user_id' => $user_id,
+                    'mq_rematik' => $request->mq_rematik,
+                    'mq_jantung' => $request->mq_rematik,
+                    'mq_tekanan_darah' => $request->mq_tekanan_darah,
+                    'mq_tulang_belakang' => $request->mq_tulang_belakang,
+                    'mq_asamurat' => $request->mq_asamurat,
+                    'mq_asma' => $request->mq_asma,
+                    'mq_hamil' => $request->mq_hamil,
+                    'mq_datang_bulan' => $request->mq_datang_bulan,
+                    'mq_alat_bantu' => $request->mq_alat_bantu,
+                    'mq_operasi' => $request->mq_operasi,
+                    'mq_makan' => $request->mq_makan,
+                    'mq_menghindari_bagian' => $request->mq_menghindari_bagian
+                    ));
+
+            $booking = new Booking;
+            $booking->user_id = $user_id;
+            $booking->medical_questioner_id = $setMQ; 
+            $booking->order = $order;
+            $booking->date = $date;
+            $booking->$cst_name = $request->cst_name;
+            $booking->$cst_address = $request->cst_address;
+            $booking->$cst_phone = $request->cst_phone;
+            $booking->$cst_job = $request->cst_job;
+            $booking->save();
+
+        }else {
             return response()->json([
                 'success' => 'false'
             ]);
@@ -131,6 +163,11 @@ class bookingController extends Controller
 
     public function infoWeb(Request $request){
         $booking = Booking::find($request->id);
+
+        $user = User::where('id', $booking->user_id)->first();
+        if($user->role == 2) $is_wild = 'Y';
+        else $is_wild = 'N';
+
         $pId= $booking->order;
         setlocale(LC_TIME, 'id_ID.UTF8', 'id_ID.UTF-8', 'id_ID.8859-1', 'id_ID', 'IND.UTF8', 'IND.UTF-8', 'IND.8859-1', 'IND', 'Indonesian.UTF8', 'Indonesian.UTF-8', 'Indonesian.8859-1', 'Indonesian', 'Indonesia', 'id', 'ID');
         $day = strftime("%A", strtotime($booking->date));
@@ -139,10 +176,11 @@ class bookingController extends Controller
         if(getRole()===3) $is_superadmin = 'Y';
         else $is_superadmin = 'N';
 
-        $mq = MQ::where('user_id', $booking->user_id)->first();
+        $mq = MQ::where('id', $booking->medical_questioner_id)->first();
+        if(!isset($mq)) $mq = 'none';
         //$mq = DB::table('medical_questioner')->first();
 
-        return view('bookingInfo')->with(compact('teraphis', 'booking', 'is_superadmin', 'mq'));
+        return view('bookingInfo')->with(compact('teraphis', 'booking', 'is_superadmin', 'mq', 'is_wild'));
     }
 
     public function bookingCancel(Request $request){
