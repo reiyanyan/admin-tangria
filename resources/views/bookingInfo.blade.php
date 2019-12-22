@@ -85,117 +85,119 @@
 
                         @elseif($booking->status == 'pending')
                         <hr>
-                        @if($mq != 'none')
-                          <p align="left"><b>Data medical questioner</b></p>
-                          <table class="table">
-                            <thead>
-                              <tr style="size: ">
-                                <th scope="col" style="width: 70%">Gejala</th>
-                                <th scope="col" style="width: 30%">Ya / Tidak</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>Rematik</td>
-                                @if($mq->mq_rematik == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Masalah Jantung</td>
-                                @if($mq->mq_jantung == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Tekanan darah rendah / tinggi</td>
-                                @if($mq->mq_tekanan_darah == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Masalah tulang belakang</td>
-                                @if($mq->mq_tulang_belakang == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Asamurat</td>
-                                @if($mq->mq_asamurat == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Asma</td>
-                                @if($mq->mq_asma == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Sedang hamil</td>
-                                @if($mq->mq_hamil == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Sedang datang bulan</td>
-                                @if($mq->mq_datang_bulan == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Alat bantu mental</td>
-                                @if($mq->mq_alat_bantu == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Pernah dioperasi</td>
-                                @if($mq->mq_operasi == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Baru saja makan</td>
-                                @if($mq->mq_makan == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                              <tr>
-                                <td>Menghindari bagian tertentu</td>
-                                @if($mq->mq_menghindari_bagian == 'true')
-                                  <td>Ya</td>
-                                @else
-                                  <td>Tidak</td>
-                                @endif  
-                              </tr>
-                            </tbody>
-                          </table>
-                        @else
-                            <p align="left"><b>Medical questioner data from previous system version is not found</b></p>
-                        @endif    
+                          @if($is_with_mq == 'true')
+                          @if($mq != 'none')
+                            <p align="left"><b>Data medical questioner</b></p>
+                            <table class="table">
+                              <thead>
+                                <tr style="size: ">
+                                  <th scope="col" style="width: 70%">Gejala</th>
+                                  <th scope="col" style="width: 30%">Ya / Tidak</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>Rematik</td>
+                                  @if($mq->mq_rematik == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Masalah Jantung</td>
+                                  @if($mq->mq_jantung == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Tekanan darah rendah / tinggi</td>
+                                  @if($mq->mq_tekanan_darah == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Masalah tulang belakang</td>
+                                  @if($mq->mq_tulang_belakang == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Asamurat</td>
+                                  @if($mq->mq_asamurat == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Asma</td>
+                                  @if($mq->mq_asma == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Sedang hamil</td>
+                                  @if($mq->mq_hamil == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Sedang datang bulan</td>
+                                  @if($mq->mq_datang_bulan == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Alat bantu mental</td>
+                                  @if($mq->mq_alat_bantu == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Pernah dioperasi</td>
+                                  @if($mq->mq_operasi == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Baru saja makan</td>
+                                  @if($mq->mq_makan == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                                <tr>
+                                  <td>Menghindari bagian tertentu</td>
+                                  @if($mq->mq_menghindari_bagian == 'true')
+                                    <td>Ya</td>
+                                  @else
+                                    <td>Tidak</td>
+                                  @endif  
+                                </tr>
+                              </tbody>
+                            </table>
+                          @else
+                              <p align="left"><b>Medical questioner data from previous system version is not found</b></p>
+                          @endif
+                          @endif    
                           <center>
                             <a class="btn btn-outline-danger" data-toggle="modal" data-target="#modalCancel">Reject</a>
                             <a class="btn btn-outline-success" @if($teraphis->isNotEmpty()) data-toggle="modal" data-target="#modalDone" @endif >Accept</a>
@@ -207,7 +209,7 @@
                           <input type="text" readonly class="form-control" id="pesan" aria-describedby="emailHelp"
                             value="{{ $booking->message }}">
                         </div>
-                        <p align="center" class="text-red-50">Booking has been rejected</p>
+                        <p align="center" class="text-red-50"><i>Booking has been rejected</i></p>
 
                         @elseif($booking->status == "rejected")
                         <div class="form-group">
@@ -215,11 +217,146 @@
                           <input type="text" readonly class="form-control" id="pesan" aria-describedby="emailHelp"
                             value="{{ $booking->message }}">
                         </div>
-                        <p align="center" class="text-red-50">Booking has been rejected</p>
+                        <p align="center" class="text-red-50"><i>Booking has been rejected</i></p>
 
                         
-                        @else
-                        <p align="center">Booking is done</p>
+                        @elseif($booking->status = 'selesai')
+                        <!-- GUEST COMMENT -->
+                          @if(isset($gc))
+                          <hr>
+                            <p align="left" style="font-size: 115%;"><b>Guest comment</b></p>
+                            @if(count($count_gc) < 2)
+                            <div style="display: flex; margin:10px; font-style: italic;"><p style="width: 50%;">Tipe pelanggan</p><p style="margin-left: 10px;">Baru</p></div>
+                            @else
+                            <div style="display: flex; margin:10px; font-style: italic;"><p style="width: 50%;">Tipe pelanggan</p><p style="margin-left: 10px;">Berulang</p></div>
+                            @endif
+                            <!-- servece tangria spa -->
+                            <table class="table">
+                            <thead>
+                              <tr style="">
+                                <th scope="col" style="width: 50%">Service</th>
+                                <th scope="col" style="width: 50%">Memuaskan / Tidak memuaskan</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Staf pelayanan</td>
+                                @if($gc->gc_staff_pelayanan == 'Y')
+                                  <td>Memuaskan</td>
+                                @else
+                                  <td>Tidak Memuaskan</td>
+                                @endif  
+                              </tr>
+                              <tr>
+                                <td>Suasana SPA</td>
+                                @if($gc->gc_suasana_spa == 'Y')
+                                  <td>Memuaskan</td>
+                                @else
+                                  <td>Tidak Memuaskan</td>
+                                @endif  
+                              </tr>
+                              <tr>
+                                <td>Kebersihan dan kenyamanan</td>
+                                @if($gc->gc_kebersihan_kenyamanan == 'Y')
+                                  <td>Memuaskan</td>
+                                @else
+                                  <td>Tidak Memuaskan</td>
+                                @endif  
+                              </tr>
+                              <tr>
+                                <td>Teknik perawatan</td>
+                                @if($gc->gc_teknik_perawatan == 'Y')
+                                  <td>Memuaskan</td>
+                                @else
+                                  <td>Tidak Memuaskan</td>
+                                @endif  
+                              </tr>
+                              <tr>
+                                <td>Pelayanan terapis</td>
+                                @if($gc->gc_pelayanan_terapis == 'Y')
+                                  <td>Memuaskan</td>
+                                @else
+                                  <td>Tidak Memuaskan</td>
+                                @endif  
+                              </tr>
+                              @if($gc->gc_mungkinkah_kembali != null)
+                              
+                            </tbody>
+                          </table>
+                          <br>
+                          <!-- saya tau tangria dari -->
+                          @if($gc->gc_at_brosur != null && $gc->gc_at_rekomendasi != null && $gc->gc_at_spanduk != null && $gc->gc_at_media_sosial != null && $gc->gc_at_lain != null)
+                          <p align="left"><b>Saya tahu tangria dari :</b></p>
+                          <ul>
+                            @if($gc->gc_at_brosur == 'Y')
+                            <li>Brosur</li>
+                            @endif
+                             @if($gc->gc_at_rekomendasi == 'Y')
+                            <li>Rekomendasi dari teman / saudara</li>
+                            @endif
+                             @if($gc->gc_at_spanduk == 'Y')
+                            <li>Lihat billboard / spanduk</li>
+                            @endif
+                             @if($gc->gc_at_media_sosial == 'Y')
+                            <li>Media sosial / instagram</li>
+                            @endif
+                             @if($gc->gc_at_lain == 'Y')
+                            <li>Lainnya</li>
+                            @endif
+                          </ul>
+                            @else
+                            @endif
+                          @endif
+                          <br>
+                          
+                          <!-- mungkin kembali -->
+                          @if($gc->gc_mungkinkah_kembali != null)
+                          <table class="table">
+                            <thead>
+                              <tr style="">
+                                <td style="width: 50%;">Saya akan kembali lagi</td>
+                                @if($gc->gc_mungkinkah_kembali == 'Y')
+                                  <td style="width: 50%;">Ya</td>
+                                @elseif($gc->gc_mungkinkah_kembali == 'N')
+                                  <td style="width: 50%;">Tidak</td>
+                                @endif  
+                              </tr>
+                            </thead>
+                          </table>
+                          @endif
+
+                          <!--  ada yg perlu diperbaiki-->
+                          @if($gc->gc_ada_perlu_diperbaiki != null && $gc->gc_ada_perlu_diperbaiki == '_N_')
+                          <table class="table">
+                            <thead style="">
+                              <tr>
+                                <td style="width: 50%;">Ada yang perlu diperbaiki</td>
+                                <td style="width: 50%;">Tidak</td>
+                              </tr>
+                            </thead>
+                          </table>
+                          @else
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Ada yang perlu diperbaiki ?</label>
+                            <input type="text" readonly class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"value="{{ $gc->gc_ada_perlu_diperbaiki }}">
+                          </div>
+                          @endif
+                            @if(trim($gc->gc_komen_lain) == '' || $$gc->gc_komen_lain == null)
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Komentar lain</label>
+                              <input style="font-style: italic;" type="text" readonly class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                              value="(no other comments)">
+                            </div>
+                            @else
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Komentar lain</label>
+                              <input type="text" readonly class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                              value="{{ $gc->gc_komen_lain }}">
+                            </div>
+                            @endif
+                          <br>
+                          @endif
+                        <p align="center"><i>Booking is done</i></p>
                         @endif
                     </form>
 

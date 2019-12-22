@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\DB;
 use App\Booking;
 use App\Booking_cs;
 use App\Medical_questioner as MQ;
+use App\Guest_comment as GC;
 use App\User;
+use App\Product;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
@@ -88,8 +90,9 @@ class bookingController extends Controller
             if(!isset($MQ)){
                 // hit API update profile
                 return response()->json([
-                    'success' => 'true',
+                    'success' => 'false',
                     'first_book' => $is_first,
+                    'responsecode' => 'er-mq_rqr',
                     'message' => 'please set your medical questioner!'
                 ], 200);
             }
@@ -178,9 +181,15 @@ class bookingController extends Controller
 
         $mq = MQ::where('id', $booking->medical_questioner_id)->first();
         if(!isset($mq)) $mq = 'none';
-        //$mq = DB::table('medical_questioner')->first();
 
-        return view('bookingInfo')->with(compact('teraphis', 'booking', 'is_superadmin', 'mq', 'is_wild'));
+        $product = Product::where('id', $pId)->first();
+        if($product->medical_questioner == 'true') $is_with_mq = 'true';
+        else $is_with_mq = 'false'; 
+
+        $gc = GC::where('booking_id', $request->id)->first();
+        $count_gc = GC::where('booking_id', $request->id)->get();
+
+        return view('bookingInfo')->with(compact('teraphis', 'booking', 'is_superadmin', 'mq', 'is_wild', 'gc', 'count_gc', 'is_with_mq'));
     }
 
     public function bookingCancel(Request $request){

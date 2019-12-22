@@ -39,6 +39,7 @@ Route::post('/booking/history',		'bookingController@history');
 Route::get('/booking/name/{name}', 	'bookingController@searchUser');
 Route::get('/booking/date/{name}', 	'bookingController@searchDate');
 
+Route::post('/guest-comment',		'guestCommentController@postSaveGuestComment'); //DC24
 Route::get('/product/{category}', 	'productController@index')->name('indexProduct');
 Route::post('/available-time', 		'timeController@index')->name('availableTime');
 Route::get('/busy', 				'timeController@busy')->name('busy');
